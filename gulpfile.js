@@ -327,8 +327,6 @@ task('schema-validation', (callback) => {
 
 });
 
-task('validate-manifest', series('generate-manifest', 'schema-validation'));
-
 /**
  * Task for starting ngrok and replacing the HOSTNAME with ngrok tunnel url.
  * The task also creates a manifest file with ngrok tunnel url.
@@ -377,6 +375,6 @@ task('styles', styles);
 
 task('serve', series('nuke', 'build', 'nodemon', 'watch'));
 
-task('manifest', series('validate-manifest', 'zip'));
+task('manifest', series('generate-manifest', 'zip'));
 
 task('ngrok-serve', series('start-ngrok', 'manifest', 'serve'));

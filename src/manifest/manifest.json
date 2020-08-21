@@ -1,6 +1,6 @@
 {
-  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.6/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.6",
+  "$schema": "https://raw.githubusercontent.com/OfficeDev/microsoft-teams-app-schema/preview/DevPreview/MicrosoftTeams.schema.json",
+  "manifestVersion": "devPreview",
   "id": "{{APPLICATION_ID}}",
   "version": "{{VERSION}}",
   "packageName": "{{PACKAGE_NAME}}",

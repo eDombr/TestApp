@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Provider, Flex, Text, Button, Header } from "@fluentui/react-northstar";
 import TeamsBaseComponent, { ITeamsBaseComponentState } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
+import Content from "./Content";
+import SidePanel from "./SidePanel";
 /**
  * State for the testApp3TabTab React component
  */
 export interface ITestApp3TabState extends ITeamsBaseComponentState {
     entityId?: string;
+    frameContext: string;
 }
 
 /**
@@ -28,13 +30,16 @@ export class TestApp3Tab extends TeamsBaseComponent<ITestApp3TabProps, ITestApp3
         if (await this.inTeams()) {
             microsoftTeams.initialize();
             microsoftTeams.registerOnThemeChangeHandler(this.updateTheme);
-            microsoftTeams.getContext((context) => {
+            microsoftTeams.getContext((context: any) => {
                 microsoftTeams.appInitialization.notifySuccess();
                 this.setState({
-                    entityId: context.entityId
+                    entityId: context.entityId,
+                    frameContext: context.frameContext
                 });
+
                 this.updateTheme(context.theme);
             });
+
         } else {
             this.setState({
                 entityId: "This is not hosted in Microsoft Teams"
@@ -47,32 +52,10 @@ export class TestApp3Tab extends TeamsBaseComponent<ITestApp3TabProps, ITestApp3
      */
     public render() {
         return (
-            <Provider theme={this.state.theme}>
-                <Flex fill={true} column styles={{
-                    padding: ".8rem 0 .8rem .5rem"
-                }}>
-                    <Flex.Item>
-                        <Header content="This is your tab" />
-                    </Flex.Item>
-                    <Flex.Item>
-                        <div>
-
-                            <div>
-                                <Text content={this.state.entityId} />
-                            </div>
-
-                            <div>
-                                <Button onClick={() => alert("It worked!")}>A sample button</Button>
-                            </div>
-                        </div>
-                    </Flex.Item>
-                    <Flex.Item styles={{
-                        padding: ".8rem 0 .8rem .5rem"
-                    }}>
-                        <Text size="smaller" content="(C) Copyright SolbegSoft" />
-                    </Flex.Item>
-                </Flex>
-            </Provider>
+            this.state.frameContext === "content" ?
+                <Content theme={this.state.theme} entityId={this.state.entityId}></Content> :
+            this.state.frameContext === "sidePanel" ?
+                <SidePanel></SidePanel> : null
         );
     }
 }
